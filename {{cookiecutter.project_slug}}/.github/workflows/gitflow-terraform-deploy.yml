@@ -191,7 +191,7 @@ jobs:
 
   terraform_operation:
     needs: [determine_environment]
-    uses: nodejs-projects-kenanhancer/gitflow-shared-workflows/.github/workflows/reusable-typescript-gcp-cloud-run-service-terraform-deploy.yml@main
+    uses: nodejs-projects-kenanhancer/gitflow-shared-workflows/.github/workflows/reusable-typescript-gcp-cloud-run-function-terraform-deploy.yml@main
     with:
       environment: ${{ needs.determine_environment.outputs.environment }}
       source_environment: ${{ needs.determine_environment.outputs.source_environment }}
