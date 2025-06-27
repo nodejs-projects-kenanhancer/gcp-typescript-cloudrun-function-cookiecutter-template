@@ -190,9 +190,9 @@ brew install asdf
 
    ```bash
    BASIC_SETTINGS__ENVIRONMENT=dev
-   BASIC_SETTINGS__GCP_PROJECT_ID=medallion-dev
-   BASIC_SETTINGS__GCP_PROJECT_NUMBER=11111111
-   BASIC_SETTINGS__APP_CONFIG_BUCKET=app-config-11111111-dev
+   BASIC_SETTINGS__GCP_PROJECT_ID=<GCP-PROJECT-ID>
+   BASIC_SETTINGS__GCP_PROJECT_NUMBER=<GCP-PROJECT-NUMBER>
+   BASIC_SETTINGS__APP_CONFIG_BUCKET=app-config-<GCP-PROJECT-NUMBER>-dev
    BASIC_SETTINGS__GCP_SERVICE_NAME=say_hello_config
    ```
 
@@ -251,7 +251,7 @@ brew install asdf
 
   ```bash
   gcloud run services list \
-    --project=medallion-dev \
+    --project=<GCP-PROJECT-ID> \
     --region=europe-north1
   ```
 
@@ -259,7 +259,7 @@ brew install asdf
 
   ```bash
   gcloud functions logs read say-hello-dev \
-    --project=medallion-dev \
+    --project=<GCP-PROJECT-ID> \
     --region=europe-north1
   ```
 
@@ -267,7 +267,7 @@ brew install asdf
 
   ```bash
   gcloud functions logs read say-hello-dev \
-    --project=medallion-dev \
+    --project=<GCP-PROJECT-ID> \
     --region=europe-north1 \
     --limit=5 \
     --format=json
@@ -276,7 +276,7 @@ brew install asdf
 - Test Cloud Function
 
   ```bash
-  curl -m 70 -X GET https://europe-north1-medallion-dev.cloudfunctions.net/say-hello-dev \
+  curl -m 70 -X GET https://europe-north1-<GCP-PROJECT-ID>.cloudfunctions.net/say-hello-dev \
   -H "Authorization: bearer $(gcloud auth print-identity-token)"
   ```
 
@@ -286,7 +286,7 @@ brew install asdf
 
 ```bash
 gcloud config list                                    # View current configuration
-gcloud config set project <PROJECT-ID>                # Switch active project
+gcloud config set project <GCP-PROJECT-ID>                # Switch active project
 gcloud config configurations create <CONFIGURATION_NAME> 
 gcloud projects list                                  # List all projects
 ```
@@ -298,7 +298,7 @@ gcloud projects list                                  # List all projects
 gcloud iam service-accounts list                                    # List service accounts
 gcloud iam service-accounts describe <SERVICE-ACCOUNT-EMAIL>        # Get details of a service account
 gcloud iam service-accounts get-iam-policy <SERVICE-ACCOUNT-EMAIL>  # Get IAM policy for service account
-gcloud iam roles list --project=<PROJECT-ID>                        # List IAM roles
+gcloud iam roles list --project=<GCP-PROJECT-ID>                        # List IAM roles
 gcloud projects get-iam-policy                                      # View project IAM policy
 
 # Enable/Disable
@@ -327,7 +327,7 @@ gcloud iam service-accounts keys delete <KEY-ID> \                 # Delete key
     --iam-account=<SERVICE-ACCOUNT-EMAIL>
 
 # IAM Policy
-gcloud projects add-iam-policy-binding <PROJECT-ID> \              # Grant role to service account
+gcloud projects add-iam-policy-binding <GCP-PROJECT-ID> \              # Grant role to service account
     --member="serviceAccount:<SERVICE-ACCOUNT-EMAIL>" \
     --role="<ROLE-ID>"
 ```
@@ -357,7 +357,7 @@ gcloud container clusters get-credentials <CLUSTER-NAME>    # Configure kubectl
 
 ### Common Options
 
-- `--project=<PROJECT-ID>`: Specify project
+- `--project=<GCP-PROJECT-ID>`: Specify project
 - `--format=[json|yaml]`: Change output format
 - `--filter="<EXPRESSION>"`: Filter results
 
@@ -385,7 +385,11 @@ gcloud auth login                         # Authenticate account
 ```bash
 cd ./{{cookiecutter.project_slug}}
 source ./scripts/init_terraform.sh
-init_terraform -b terraform-state-bucket -p {{cookiecutter.gcp_project_id}} -d terraform -k "GrEs/8Y9T6c8XHppgSClVMopJuXH17XakvmgxHCmawo="
+gcp_project_id=<GCP-PROJECT-ID>
+gcp_bucket_name=terraform-state-bucket
+terraform_dir=terraform
+encryption_key="ch4xHNN/6Jlnt7wzZMD0nA3/vjb13YOmUHqhTrZc84c="
+init_terraform -b $gcp_bucket_name -p $gcp_project_id -d $terraform_dir -k $encryption_key
 terraform -chdir=terraform plan
 terraform -chdir=terraform apply
 ```
