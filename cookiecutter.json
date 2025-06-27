@@ -1,0 +1,33 @@
+{
+    "project_name": "My GCP Function",
+    "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_') }}",
+    "version": "0.0.2",
+    "description": "GCP TypeScript Cloud Function",
+    "author_name": "Your Name",
+    "author_email": "your.email@example.com",
+    "nodejs_version": "22.15.0",
+    "yarn_version": "4.9.1",
+    "gcp_region": "europe-north1",
+    "gcp_project_details": [
+        "medallion-dev|111111111111|dev",
+        "medallion-nonprod|222222222222|preprod",
+        "medallion-prod|333333333333|prod",
+        "custom|custom|custom"
+    ],
+    "gcp_project_id": "{% if 'custom' not in cookiecutter.gcp_project_details %}{{ cookiecutter.gcp_project_details.split('|')[0] }}{% else %}{% endif %}",
+    "gcp_project_number": "{% if 'custom' not in cookiecutter.gcp_project_details %}{{ cookiecutter.gcp_project_details.split('|')[1] }}{% else %}{% endif %}",
+    "environment": "{% if 'custom' not in cookiecutter.gcp_project_details %}{{ cookiecutter.gcp_project_details.split('|')[2] }}{% else %}{% endif %}",
+    "interface_type": [
+        "http",
+        "pubsub",
+        "cli"
+    ],
+    "gcp_function_name": "say_hello",
+    "function_name_camel": "{{ cookiecutter.gcp_function_name.replace('_', ' ').title().replace(' ', '')[0].lower() + cookiecutter.gcp_function_name.replace('_', ' ').title().replace(' ', '')[1:] }}",
+    "function_name_pascal": "{{ cookiecutter.gcp_function_name.replace('_', ' ').title().replace(' ', '') }}",
+    "function_name_kebab": "{{ cookiecutter.gcp_function_name.replace('_', '-') }}",
+    "_copy_without_render": [
+        "scripts",
+        ".github"
+    ]
+}

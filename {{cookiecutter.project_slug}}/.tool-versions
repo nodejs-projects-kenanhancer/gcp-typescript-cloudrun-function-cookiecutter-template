@@ -1,0 +1,1 @@
+nodejs {{ cookiecutter.nodejs_version }}
